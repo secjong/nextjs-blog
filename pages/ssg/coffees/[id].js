@@ -22,7 +22,7 @@ export default function Coffee({ item }) {
         <div className={utilStyles.lightText}>
           <Image
             priority
-            src={item.image}
+            src={item.image ? item.image : ""}
             className={utilStyles.borderCircle}
             height={144}
             width={144}
