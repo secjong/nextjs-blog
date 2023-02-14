@@ -2,14 +2,14 @@
 import Head from "next/head";
 
 // custom components
-import Layout from "../../components/layout";
-import Date from "../../components/date";
+import Layout from "@/components/layout";
+import Date from "@/components/date";
 
 // lib utilities
-import { getAllPostIds, getPostData } from "../../lib/posts";
+import { getAllPostIds, getPostData } from "@/lib/posts";
 
 // styles
-import utilStyles from "../../styles/utils.module.css";
+import utilStyles from "@/styles/utils.module.css";
 
 export default function Post({ postData }) {
   return (
