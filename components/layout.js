@@ -8,7 +8,7 @@ import utilStyles from "../styles/utils.module.css";
 const name = "Your Name";
 export const siteTitle = "Next.js Sample Website";
 
-export default function Layout({ children, home }) {
+export default function Layout({ children, home, basePath = ""}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -62,7 +62,7 @@ export default function Layout({ children, home }) {
       <main>{children}</main>
       {!home && (
         <div className={styles.backToHome}>
-          <Link href="/">← Back to home</Link>
+          <Link href={`${basePath}/`}>← Back to home!!!</Link>
         </div>
       )}
     </div>
