@@ -1,3 +1,5 @@
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+
 // next built-in components
 import Head from "next/head";
 import Image from "next/image";
@@ -11,7 +13,7 @@ import { getCoffee } from "@/lib/coffee";
 // styles
 import utilStyles from "@/styles/utils.module.css";
 
-export default function Coffee({ item }) {
+const Coffee = ({ item }) => {
   return (
     <Layout basePath="/ssr/coffees">
       <Head>
@@ -41,9 +43,9 @@ export default function Coffee({ item }) {
       </article>
     </Layout>
   );
-}
+};
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params.id;
   const coffee = await getCoffee(id);
 
@@ -52,4 +54,6 @@ export async function getServerSideProps(context) {
       item: coffee,
     },
   };
-}
+};
+
+export default Coffee;

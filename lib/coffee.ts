@@ -1,22 +1,22 @@
 import useSWR from "swr";
 
-export async function getCoffees() {
+export const getCoffees = async () => {
   const response = await fetch("https://api.sampleapis.com/coffee/hot");
   const items = await response.json();
 
   return items;
-}
+};
 
-export async function getCoffee(id) {
+export const getCoffee = async (id) => {
   const response = await fetch("https://api.sampleapis.com/coffee/hot");
   const items = await response.json();
 
   return items.find((item) => {
     return item.id.toString() === id.toString();
   });
-}
+};
 
-export function useCoffees() {
+export const useCoffees = () => {
   const { data, error, isLoading } = useSWR(
     "/api/coffees"
     // { refreshInterval: 1000 }
@@ -27,9 +27,9 @@ export function useCoffees() {
     error: error,
     isLoading: isLoading,
   };
-}
+};
 
-export function useCoffee(id) {
+export const useCoffee = (id) => {
   const { data, error, isLoading } = useSWR(
     `/api/coffees/${id}`
     // { refreshInterval: 1000 }
@@ -40,4 +40,4 @@ export function useCoffee(id) {
     error: error,
     isLoading: isLoading,
   };
-}
+};

@@ -1,3 +1,5 @@
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+
 // next built-in components
 import Head from "next/head";
 import Image from "next/image";
@@ -11,7 +13,7 @@ import { getCoffees, useCoffee } from "@/lib/coffee";
 // styles
 import utilStyles from "@/styles/utils.module.css";
 
-export default function Coffee(props) {
+const Coffee = (props) => {
   const id = props.id;
   const { coffee, error, isLoading } = useCoffee(id);
   const item = coffee;
@@ -57,7 +59,7 @@ export default function Coffee(props) {
       </article>
     </Layout>
   );
-}
+};
 
 // export async function getServerSideProps(context) {
 //   const id = context.params.id;
@@ -69,7 +71,7 @@ export default function Coffee(props) {
 //   };
 // }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params.id;
 
   return {
@@ -77,9 +79,9 @@ export async function getStaticProps({ params }) {
       id: id,
     },
   };
-}
+};
 
-export async function getStaticPaths(context) {
+export const getStaticPaths: GetStaticPaths = async (context) => {
   const coffees = await getCoffees();
   const coffeesParams = coffees.map((coffee) => {
     return {
@@ -93,4 +95,6 @@ export async function getStaticPaths(context) {
     paths: coffeesParams,
     fallback: false, // 없는경우 대체페이지 보여주지 않음(404페이지 노출)
   };
-}
+};
+
+export default Coffee;

@@ -1,3 +1,5 @@
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+
 import Head from "next/head";
 import Link from "next/link";
 
@@ -7,7 +9,7 @@ import { getCoffees } from "@/lib/coffee";
 
 import utilStyles from "@/styles/utils.module.css";
 
-export default function Coffees({ coffees }) {
+const Coffees = ({ coffees }) => {
   return (
     <Layout>
       <Head>
@@ -25,9 +27,7 @@ export default function Coffees({ coffees }) {
         <ul className={utilStyles.list}>
           {coffees.map((coffeeItem, coffeeIndex) => (
             <li className={utilStyles.listItem} key={coffeeItem.id}>
-              <Link href={`/ssg/coffees/${coffeeItem.id}`}>
-                {coffeeItem.title}
-              </Link>
+              <Link href={`/ssr/coffees/${coffeeItem.id}`}>{coffeeItem.title}</Link>
               <br />
               <small className={utilStyles.lightText}>
                 {coffeeItem.description}
@@ -38,14 +38,15 @@ export default function Coffees({ coffees }) {
       </section>
     </Layout>
   );
-}
+};
 
-export async function getStaticProps(context) {
-    const coffees = await getCoffees();
-    return {
-      props: {
-        coffees: coffees,
-      },
-    };
-}
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const coffees = await getCoffees();
+  return {
+    props: {
+      coffees: coffees,
+    },
+  };
+};
 
+export default Coffees;

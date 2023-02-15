@@ -4,11 +4,22 @@ import Link from "next/link";
 
 import styles from "./layout.module.css";
 import utilStyles from "../styles/utils.module.css";
+import { ReactComponentElement, ReactElement } from "react";
 
 const name = "Your Name";
 export const siteTitle = "Next.js Sample Website";
 
-export default function Layout({ children, home, basePath = ""}) {
+const Layout = ({
+  children,
+  home,
+  basePath = "",
+}: {
+  children: React.ReactNode;
+  home?: boolean;
+  basePath?: string;
+}) => {
+  // { children, home, basePath = ""}: {children: React.ReactNode, home: boolean, basePath: string}
+  // props: { children: React.ReactNode, home: boolean, basePath: string}
   return (
     <div className={styles.container}>
       <Head>
@@ -67,4 +78,6 @@ export default function Layout({ children, home, basePath = ""}) {
       )}
     </div>
   );
-}
+};
+
+export default Layout;

@@ -1,39 +1,15 @@
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+
 import Head from "next/head";
 import Link from "next/link";
 
-import { useState, useEffect } from "react";
-
 import Layout, { siteTitle } from "@/components/layout";
 
-import { getCoffees, useCoffees } from "@/lib/coffee";
+import { getCoffees } from "@/lib/coffee";
 
 import utilStyles from "@/styles/utils.module.css";
 
-export default function Coffees(props) {
-  const { coffees, error, isLoading } = useCoffees();
-
-  //   const [coffees, setCoffees] = useState(null);
-  //   const [isLoading, setIsLoading] = useState(false);
-
-  //   useEffect(async () => {
-  //     setIsLoading(true);
-  //     const coffees = await getCoffees();
-  //     setCoffees(coffees);
-  //     setIsLoading(false);
-  //   }, []);
-
-  if (error) {
-    return <p>faild to load</p>;
-  }
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!coffees) {
-    return <p>No Coffees</p>;
-  }
-
+const Coffees = ({ coffees }) => {
   return (
     <Layout>
       <Head>
@@ -51,7 +27,7 @@ export default function Coffees(props) {
         <ul className={utilStyles.list}>
           {coffees.map((coffeeItem, coffeeIndex) => (
             <li className={utilStyles.listItem} key={coffeeItem.id}>
-              <Link href={`/csr/coffees/${coffeeItem.id}`}>
+              <Link href={`/ssg/coffees/${coffeeItem.id}`}>
                 {coffeeItem.title}
               </Link>
               <br />
@@ -64,4 +40,15 @@ export default function Coffees(props) {
       </section>
     </Layout>
   );
-}
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const coffees = await getCoffees();
+  return {
+    props: {
+      coffees: coffees,
+    },
+  };
+};
+
+export default Coffees;
