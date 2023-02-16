@@ -7,8 +7,9 @@ import Image from "next/image";
 // custom components
 import Layout from "@/components/layout";
 
-// lib utilities
+// utilities
 import { getCoffees, useCoffee } from "@/lib/coffee";
+import util from "@/util/util";
 
 // styles
 import utilStyles from "@/styles/utils.module.css";
@@ -28,6 +29,12 @@ const Coffee = (props) => {
 
   if (!item) {
     return <p>No Coffee</p>;
+  }
+
+  // item.image 가 이미지 url 형식이 아닐시 처리
+  if (!util.isUrl(item.image)) {
+    item.image =
+      "https://openimage.interpark.com/tour-mobile/common/common/transparent.png";
   }
 
   return (
