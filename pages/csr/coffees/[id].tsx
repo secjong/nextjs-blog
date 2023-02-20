@@ -8,7 +8,8 @@ import Image from "next/image";
 import Layout from "@/components/layout";
 
 // utilities
-import { getCoffees, useCoffee } from "@/lib/coffee";
+import { getCoffees } from "@/lib/coffee";
+import { useCoffee } from "@/lib/apiHook";
 import util from "@/util/util";
 
 // styles
@@ -16,8 +17,8 @@ import utilStyles from "@/styles/utils.module.css";
 
 const Coffee = (props) => {
   const id = props.id;
-  const { coffee, error, isLoading } = useCoffee(id);
-  const item = coffee;
+  const { data, error, isLoading } = useCoffee(id);
+  const item = data;
 
   if (error) {
     return <p>faild to load</p>;

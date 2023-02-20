@@ -5,12 +5,14 @@ import { useState, useEffect } from "react";
 
 import Layout, { siteTitle } from "@/components/layout";
 
-import { getCoffees, useCoffees } from "@/lib/coffee";
+import { getCoffees } from "@/lib/coffee";
+import { useCoffees } from "@/lib/apiHook";
 
 import utilStyles from "@/styles/utils.module.css";
 
 const Coffees = (props) => {
-  const { coffees, error, isLoading } = useCoffees();
+  const { data, error, isLoading } = useCoffees();
+  const coffees = data;
 
   //   const [coffees, setCoffees] = useState(null);
   //   const [isLoading, setIsLoading] = useState(false);

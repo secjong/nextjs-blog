@@ -60,6 +60,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       item: coffee,
     },
+    // notFound: true,
+    // redirect: {
+    //   destination: "/",
+    // permanent: false, // true면 308으로, 검색엔진에서 영원히 주소가 바뀐것으로 캐싱하게 되고, false이면 307으로, 잠시 바뀐 것으로 인식하여 검색엔진에 캐시되지 않는다.
+    // statusCode: 308, // 리다이렉트 시 직접 status code 입력하는방법
+    // },
   };
 };
 

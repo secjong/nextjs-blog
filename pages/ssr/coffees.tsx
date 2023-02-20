@@ -27,7 +27,9 @@ const Coffees = ({ coffees }) => {
         <ul className={utilStyles.list}>
           {coffees.map((coffeeItem, coffeeIndex) => (
             <li className={utilStyles.listItem} key={coffeeItem.id}>
-              <Link href={`/ssr/coffees/${coffeeItem.id}`}>{coffeeItem.title}</Link>
+              <Link href={`/ssr/coffees/${coffeeItem.id}`}>
+                {coffeeItem.title}
+              </Link>
               <br />
               <small className={utilStyles.lightText}>
                 {coffeeItem.description}

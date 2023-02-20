@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "dev:test": "cross-env NODE_ENV=dev NODE_OPTIONS='--inspect' env-cmd -f .env.dev next dev",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/node": "18.13.0",
     "@types/react": "18.0.28",
+    "cross-env": "^7.0.3",
     "typescript": "4.9.5"
   }
 }
