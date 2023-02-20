@@ -1,13 +1,41 @@
 import Head from "next/head";
 import Link from "next/link";
 
+import { useState, useEffect } from "react";
+
 import Layout, { siteTitle } from "@/components/layout";
 
 import { getCoffees } from "@/lib/coffee";
+import { useCoffees } from "@/lib/apiHook";
 
 import utilStyles from "@/styles/utils.module.css";
 
-export default function Coffees({ coffees }) {
+const Coffees = (props) => {
+  const { data, error, isLoading } = useCoffees();
+  const coffees = data;
+
+  //   const [coffees, setCoffees] = useState(null);
+  //   const [isLoading, setIsLoading] = useState(false);
+
+  //   useEffect(async () => {
+  //     setIsLoading(true);
+  //     const coffees = await getCoffees();
+  //     setCoffees(coffees);
+  //     setIsLoading(false);
+  //   }, []);
+
+  if (error) {
+    return <p>faild to load</p>;
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!coffees) {
+    return <p>No Coffees</p>;
+  }
+
   return (
     <Layout>
       <Head>
@@ -25,7 +53,9 @@ export default function Coffees({ coffees }) {
         <ul className={utilStyles.list}>
           {coffees.map((coffeeItem, coffeeIndex) => (
             <li className={utilStyles.listItem} key={coffeeItem.id}>
-              <Link href={`/ssr/coffees/${coffeeItem.id}`}>{coffeeItem.title}</Link>
+              <Link href={`/csr/coffees/${coffeeItem.id}`}>
+                {coffeeItem.title}
+              </Link>
               <br />
               <small className={utilStyles.lightText}>
                 {coffeeItem.description}
@@ -36,13 +66,6 @@ export default function Coffees({ coffees }) {
       </section>
     </Layout>
   );
-}
+};
 
-export async function getServerSideProps(context) {
-  const coffees = await getCoffees();
-  return {
-    props: {
-      coffees: coffees,
-    },
-  };
-}
+export default Coffees;

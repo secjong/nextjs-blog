@@ -1,10 +1,12 @@
+import { AppProps } from 'next/app';
+
 import useSWR, { SWRConfig } from "swr";
 
 import fetcher from "@/util/fetcher";
 
 import "../styles/globals.css";
 
-export default function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <SWRConfig
       value={{
@@ -14,4 +16,6 @@ export default function App({ Component, pageProps }) {
       <Component {...pageProps} />
     </SWRConfig>
   );
-}
+};
+
+export default App;

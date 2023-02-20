@@ -1,3 +1,5 @@
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+
 // next built-in components
 import Head from "next/head";
 
@@ -11,7 +13,15 @@ import { getAllPostIds, getPostData } from "@/lib/posts";
 // styles
 import utilStyles from "@/styles/utils.module.css";
 
-export default function Post({ postData }) {
+const Post = ({
+  postData,
+}: {
+  postData: {
+    title: string;
+    date: string;
+    contentHtml: string;
+  };
+}) => {
   return (
     <Layout>
       <Head>
@@ -26,21 +36,23 @@ export default function Post({ postData }) {
       </article>
     </Layout>
   );
-}
+};
 
-export async function getStaticProps({ params }) {
-  const postData = await getPostData(params.id);
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const postData = await getPostData(params?.id as string);
   return {
     props: {
       postData: postData,
     },
   };
-}
+};
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const paths = getAllPostIds();
   return {
     paths: paths,
     fallback: false, // 없는경우 대체페이지 보여주지 않음(404페이지 노출)
   };
-}
+};
+
+export default Post;

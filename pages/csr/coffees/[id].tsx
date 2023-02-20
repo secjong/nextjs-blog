@@ -1,3 +1,5 @@
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+
 // next built-in components
 import Head from "next/head";
 import Image from "next/image";
@@ -5,15 +7,39 @@ import Image from "next/image";
 // custom components
 import Layout from "@/components/layout";
 
-// lib utilities
-import { getCoffee, getCoffees } from "@/lib/coffee";
+// utilities
+import { getCoffees } from "@/lib/coffee";
+import { useCoffee } from "@/lib/apiHook";
+import util from "@/util/util";
 
 // styles
 import utilStyles from "@/styles/utils.module.css";
 
-export default function Coffee({ item }) {
+const Coffee = (props) => {
+  const id = props.id;
+  const { data, error, isLoading } = useCoffee(id);
+  const item = data;
+
+  if (error) {
+    return <p>faild to load</p>;
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!item) {
+    return <p>No Coffee</p>;
+  }
+
+  // item.image 가 이미지 url 형식이 아닐시 처리
+  if (!util.isUrl(item.image)) {
+    item.image =
+      "https://openimage.interpark.com/tour-mobile/common/common/transparent.png";
+  }
+
   return (
-    <Layout basePath="/ssg/coffees">
+    <Layout basePath="/csr/coffees">
       <Head>
         <title>{item.title}</title>
       </Head>
@@ -22,7 +48,7 @@ export default function Coffee({ item }) {
         <div className={utilStyles.lightText}>
           <Image
             priority
-            src={item.image ? item.image : ""}
+            src={item.image}
             className={utilStyles.borderCircle}
             height={144}
             width={144}
@@ -41,20 +67,29 @@ export default function Coffee({ item }) {
       </article>
     </Layout>
   );
-}
+};
 
-export async function getStaticProps({ params }) {
+// export async function getServerSideProps(context) {
+//   const id = context.params.id;
+
+//   return {
+//     props: {
+//       id: id,
+//     },
+//   };
+// }
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params.id;
-  const coffee = await getCoffee(id);
 
   return {
     props: {
-      item: coffee,
+      id: id,
     },
   };
-}
+};
 
-export async function getStaticPaths(context) {
+export const getStaticPaths: GetStaticPaths = async (context) => {
   const coffees = await getCoffees();
   const coffeesParams = coffees.map((coffee) => {
     return {
@@ -68,4 +103,6 @@ export async function getStaticPaths(context) {
     paths: coffeesParams,
     fallback: false, // 없는경우 대체페이지 보여주지 않음(404페이지 노출)
   };
-}
+};
+
+export default Coffee;
