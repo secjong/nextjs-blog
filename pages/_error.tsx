@@ -1,4 +1,6 @@
-const Error = ({ statusCode }) => {
+import { NextApiRequest, NextApiResponse } from 'next';
+
+const Error = ({ statusCode }: { statusCode: number }) => {
   return (
     <p>
       {statusCode
@@ -8,7 +10,7 @@ const Error = ({ statusCode }) => {
   );
 };
 
-Error.getInitialProps = ({ res, err }) => {
+Error.getInitialProps = ({ res, err }: {res: NextApiResponse, err: any }) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
   return { statusCode };
 };

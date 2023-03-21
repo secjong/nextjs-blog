@@ -3,7 +3,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
@@ -18,9 +18,14 @@
       "@/lib/*": ["lib/*"],
       "@/util/*": ["util/*"],
       "@/components/*": ["components/*"],
-      "@/styles/*": ["styles/*"]
-    }
+      "@/styles/*": ["styles/*"],
+      "@/types/*": ["types/*"]
+    },
+    "noImplicitAny": true, // 타입 미지정(암시적 any)을 허락하지 않음(true)
+    "strictNullChecks": true, // null, undefined 를 원시타입에 할당하지 못하도록 체크(true)
+    "strictBindCallApply": true // bind, call, apply 로 함수 호출시에도 인수타입 체크(true)
+    // "typeRoots": ["./@types"] // 기본값은 ["./node_modules/@types"] 이며, 명시적으로 지정하면 해당 경로의 index.d.ts를 탐색 > package.json의 types 혹은 typings 속성 경로의 파일을 탐색한다.
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }

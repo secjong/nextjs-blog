@@ -17,6 +17,6 @@ export const useCoffees = () => {
   return fetchData("/coffees");
 };
 
-export const useCoffee = (id) => {
+export const useCoffee = (id: number) => {
   return fetchData(`/coffees/${id}`);
 };

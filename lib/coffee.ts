@@ -1,3 +1,5 @@
+import { Coffee } from "@/types/coffee";
+
 export const getCoffees = async () => {
   const response = await fetch("https://api.sampleapis.com/coffee/hot");
   const items = await response.json();
@@ -5,11 +7,11 @@ export const getCoffees = async () => {
   return items;
 };
 
-export const getCoffee = async (id) => {
+export const getCoffee = async (id: number) => {
   const response = await fetch("https://api.sampleapis.com/coffee/hot");
   const items = await response.json();
 
-  return items.find((item) => {
+  return items.find((item: Coffee) => {
     return item.id.toString() === id.toString();
   });
 };
