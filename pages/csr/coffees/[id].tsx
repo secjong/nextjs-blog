@@ -1,4 +1,9 @@
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+import {
+  GetStaticProps,
+  GetStaticPaths,
+  GetServerSideProps,
+  InferGetStaticPropsType,
+} from "next";
 
 // next built-in components
 import Head from "next/head";
@@ -12,11 +17,13 @@ import { getCoffees } from "@/lib/coffee";
 import { useCoffee } from "@/lib/apiHook";
 import util from "@/util/util";
 
+// types
+import { Coffee } from "@/types/coffee";
+
 // styles
 import utilStyles from "@/styles/utils.module.css";
 
-const Coffee = (props) => {
-  const id = props.id;
+const Coffee = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data, error, isLoading } = useCoffee(id);
   const item = data;
 
@@ -58,9 +65,11 @@ const Coffee = (props) => {
         <div className={utilStyles.lightText}>
           <h2>Ingredients</h2>
           <ul>
-            {item.ingredients.map((ingredientItem, ingredientIndex) => (
-              <li key={ingredientIndex}>{ingredientItem}</li>
-            ))}
+            {item.ingredients.map(
+              (ingredientItem: string, ingredientIndex: number) => (
+                <li key={ingredientIndex}>{ingredientItem}</li>
+              )
+            )}
           </ul>
         </div>
         <div>{item.description}</div>
@@ -80,7 +89,7 @@ const Coffee = (props) => {
 // }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const id = params.id;
+  const id = params?.id;
 
   return {
     props: {
@@ -91,7 +100,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
   const coffees = await getCoffees();
-  const coffeesParams = coffees.map((coffee) => {
+  const coffeesParams = coffees.map((coffee: Coffee) => {
     return {
       params: {
         id: coffee.id.toString(),

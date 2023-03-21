@@ -1,4 +1,4 @@
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+import { GetStaticProps, GetStaticPaths, GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 import Head from "next/head";
 import Link from "next/link";
@@ -7,9 +7,13 @@ import Layout, { siteTitle } from "@/components/layout";
 
 import { getCoffees } from "@/lib/coffee";
 
+import { Coffee } from "@/types/coffee";
+
 import utilStyles from "@/styles/utils.module.css";
 
-const Coffees = ({ coffees }) => {
+const Coffees = ({ 
+  coffees,
+}: InferGetServerSidePropsType<typeof getStaticProps>) => {
   return (
     <Layout>
       <Head>
@@ -42,11 +46,13 @@ const Coffees = ({ coffees }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<{ coffees: Coffee[] }> = async (context) => {
   const coffees = await getCoffees();
   return {
     props: {
       coffees: coffees,
+      // ISR 사용법. 빌드타임에 1회, 이전 요청 대비 10초가 경과하고 요청이 오면 또 serverless function 으로 호출된다.
+      // revalidate: 10, // In seconds
     },
   };
 };

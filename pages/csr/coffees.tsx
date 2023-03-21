@@ -10,7 +10,9 @@ import { useCoffees } from "@/lib/apiHook";
 
 import utilStyles from "@/styles/utils.module.css";
 
-const Coffees = (props) => {
+import { Coffee } from "@/types/coffee";
+
+const Coffees = () => {
   const { data, error, isLoading } = useCoffees();
   const coffees = data;
 
@@ -51,7 +53,7 @@ const Coffees = (props) => {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLd}>Blog</h2>
         <ul className={utilStyles.list}>
-          {coffees.map((coffeeItem, coffeeIndex) => (
+          {coffees.map((coffeeItem: Coffee, coffeeIndex: number) => (
             <li className={utilStyles.listItem} key={coffeeItem.id}>
               <Link href={`/csr/coffees/${coffeeItem.id}`}>
                 {coffeeItem.title}

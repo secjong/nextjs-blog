@@ -1,4 +1,4 @@
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
+import { GetStaticProps, GetStaticPaths, GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 // next built-in components
 import Head from "next/head";
@@ -14,7 +14,7 @@ import util from "@/util/util";
 // styles
 import utilStyles from "@/styles/utils.module.css";
 
-const Coffee = ({ item }) => {
+const Coffee = ({ item }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   // item.image 가 이미지 url 형식이 아닐시 처리
   if (!util.isUrl(item.image)) {
     item.image =
@@ -41,7 +41,7 @@ const Coffee = ({ item }) => {
         <div className={utilStyles.lightText}>
           <h2>Ingredients</h2>
           <ul>
-            {item.ingredients.map((ingredientItem, ingredientIndex) => (
+            {item.ingredients.map((ingredientItem: string, ingredientIndex: number) => (
               <li key={ingredientIndex}>{ingredientItem}</li>
             ))}
           </ul>
@@ -53,19 +53,13 @@ const Coffee = ({ item }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.params.id;
+  const id: number = Number(context.params?.id);
   const coffee = await getCoffee(id);
 
   return {
     props: {
       item: coffee,
     },
-    // notFound: true,
-    // redirect: {
-    //   destination: "/",
-    // permanent: false, // true면 308으로, 검색엔진에서 영원히 주소가 바뀐것으로 캐싱하게 되고, false이면 307으로, 잠시 바뀐 것으로 인식하여 검색엔진에 캐시되지 않는다.
-    // statusCode: 308, // 리다이렉트 시 직접 status code 입력하는방법
-    // },
   };
 };
 
