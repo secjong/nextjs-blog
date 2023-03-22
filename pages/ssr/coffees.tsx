@@ -18,10 +18,6 @@ import { Coffee } from "@/types/coffee";
 
 import utilStyles from "@/styles/utils.module.css";
 
-type Data = {
-  coffees: [];
-};
-
 const Coffees = ({
   coffees,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -61,16 +57,14 @@ const Coffees = ({
 //   runtime: 'edge', // nodejs
 // };
 
-export const getServerSideProps: GetServerSideProps<{ coffees: Array<Coffee> }> = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps<{
+  coffees: Coffee[];
+}> = async (context) => {
   // res.setHeader(
   //   "Cache-Control",
   //   "public, s-maxage=10, stale-while-revalidate=59"
   // );
-
   const coffees = await getCoffees();
-  console.log(coffees);
   return {
     props: {
       coffees: coffees,
