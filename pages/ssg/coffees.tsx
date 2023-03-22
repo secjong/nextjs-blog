@@ -1,4 +1,4 @@
-import { GetStaticProps, GetStaticPaths, GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { GetStaticProps, GetStaticPaths, GetServerSideProps, InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
 
 import Head from "next/head";
 import Link from "next/link";
@@ -13,7 +13,7 @@ import utilStyles from "@/styles/utils.module.css";
 
 const Coffees = ({ 
   coffees,
-}: InferGetServerSidePropsType<typeof getStaticProps>) => {
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout>
       <Head>
