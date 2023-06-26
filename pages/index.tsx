@@ -45,6 +45,9 @@ const Home = ({
             <li>
               <Link href="/csr/coffees">CSR Coffees</Link>
             </li>
+            <li>
+              <Link href="/react-query/coffees">RQ Coffees</Link>
+            </li>
           </ul>
         </div>
       </section>
