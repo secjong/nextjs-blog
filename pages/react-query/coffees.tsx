@@ -6,6 +6,7 @@ import {
   NextApiRequest,
   NextApiResponse,
 } from "next";
+import { dehydrate, QueryClient, useQuery, useQueryClient, DehydratedState, UseQueryResult, Query } from "@tanstack/react-query";
 
 import Head from "next/head";
 import Link from "next/link";
@@ -18,9 +19,21 @@ import { Coffee } from "@/types/coffee";
 
 import utilStyles from "@/styles/utils.module.css";
 
-const Coffees = ({
-  coffees,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Coffees = () => {
+
+  const {data, isLoading}: UseQueryResult<Coffee[], Error> = useQuery({
+    queryKey: ["coffees"], 
+    queryFn: getCoffees, 
+    onSettled: (data, err) => {},
+    onSuccess: (data) => {},
+    onError: (err) => {console.error(err);}
+  });
+  const coffees = data;
+
+  if (isLoading) {
+    return (<h1>하하하</h1>);
+  }
+
   return (
     <Layout>
       <Head>
@@ -36,7 +49,7 @@ const Coffees = ({
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLd}>Blog</h2>
         <ul className={utilStyles.list}>
-          {coffees.map((coffeeItem, coffeeIndex) => (
+          {coffees?.map((coffeeItem, coffeeIndex) => (
             <li className={utilStyles.listItem} key={coffeeItem.id}>
               <Link href={`/ssr/coffees/${coffeeItem.id}`}>
                 {coffeeItem.title}
@@ -53,28 +66,19 @@ const Coffees = ({
   );
 };
 
-// export const config = {
-//   runtime: 'edge', // nodejs
-// };
-
 export const getServerSideProps: GetServerSideProps<{
-  coffees: Coffee[];
+  dehydratedState: DehydratedState;
 }> = async (context) => {
-  // res.setHeader(
-  //   "Cache-Control",
-  //   "public, s-maxage=10, stale-while-revalidate=59"
-  // );
-  const coffees = await getCoffees();
+  const queryClient = new QueryClient();
+  // const queryClient = useQueryClient();
+
+  queryClient.setQueryDefaults(["coffees"], {staleTime: 1000 * 5}); // coffees 키에 대해서만 staleTime 설정
+  await queryClient.prefetchQuery({queryKey: ["coffees"], queryFn: getCoffees}); // prefetch 해놓기?
+
   return {
     props: {
-      coffees: coffees,
+      dehydratedState: dehydrate(queryClient)
     },
-    // notFound: true,
-    // redirect: {
-    //   destination: "/",
-    // permanent: false, // true면 308으로, 검색엔진에서 영원히 주소가 바뀐것으로 캐싱하게 되고, false이면 307으로, 잠시 바뀐 것으로 인식하여 검색엔진에 캐시되지 않는다.
-    // statusCode: 308, // 리다이렉트 시 직접 status code 입력하는방법
-    // },
   };
 };
 

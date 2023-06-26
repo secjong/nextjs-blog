@@ -1,13 +1,10 @@
 /**
- * 서버용 fetch 라이브러리
+ * 서버용 React Query 라이브러리
  */
 import { Coffee } from "@/types/coffee";
 
 export const getCoffees = async () => {
   const response = await fetch("https://api.sampleapis.com/coffee/hot");
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
   const items = await response.json();
 
   return items;

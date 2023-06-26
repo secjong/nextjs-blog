@@ -1,3 +1,6 @@
+/**
+ * 클라이언트용 fetch 라이브러리
+ */
 import useSWR from "swr";
 
 const fetchData = (apiRoutePath: string) => {
